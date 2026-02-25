@@ -25,6 +25,8 @@ func whitelist(w http.ResponseWriter, r *http.Request) {
 		methodOptionCORS(w)
 		return
 	}
+
+	setCORS(w)
 }
 
 func methodOptionCORS(w http.ResponseWriter) {
@@ -33,4 +35,9 @@ func methodOptionCORS(w http.ResponseWriter) {
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 	w.Header().Set("Access-Control-Max-Age", "3600")
 	w.WriteHeader(http.StatusNoContent)
+}
+
+func setCORS(w http.ResponseWriter) {
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Content-Type", "application/json")
 }

@@ -1,8 +1,10 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
+	"log/slog"
 	"net/http"
 )
 
@@ -23,6 +25,17 @@ type BookingParams struct {
 func whitelist(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodOptions {
 		methodOptionCORS(w)
+		return
+	}
+
+	if r.Method != http.MethodPost {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	var params BookingParams
+	if err := json.NewDecoder(r.Body).Decode(&params); err != nil {
+		slog.Error(err.Error())
 		return
 	}
 
